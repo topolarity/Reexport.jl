@@ -22,7 +22,7 @@ function reexport(m::Module, ex::Expr)
 
     if ex.head === :module
         # @reexport {using, import} module Foo ... end
-        modules = Any[ex.args[2]]
+        modules = Any[length(ex.args) == 4 ? ex.args[3] : ex.args[2]]
         ex = Expr(:toplevel, ex, :(using .$(ex.args[2])))
     elseif ex.head::Symbol in (:using, :import) && ex.args[1].head === :(:)
         # @reexport {using, import} Foo: bar, baz
